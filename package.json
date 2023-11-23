@@ -1,0 +1,31 @@
+{
+  "name": "acs-bootstrap-input-validator",
+  "version": "1.0.0",
+  "description": "A javascript input validator for bootstrap",
+  "keywords": [
+    "input",
+    "validator",
+    "validation",
+    "form",
+    "form-validation",
+    "user-input",
+    "input-validation",
+    "bootstrap",
+    "form-validation-library",
+    "web-development",
+    "frontend",
+    "frontend-validation",
+    "client-side-validation",
+    "web-forms",
+    "form-fields"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jonathan Hayman",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.0.0"
+  }
+}
