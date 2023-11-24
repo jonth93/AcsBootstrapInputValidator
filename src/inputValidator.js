@@ -2,7 +2,7 @@
  * Bootstrap Input Validator
  * A versatile input validation library for web applications, designed to work seamlessly with Bootstrap.
  *
- * @version 1.0.4
+ * @version 1.0.7
  * @copyright 2023 Jonathan Hayman
  * @license MIT
  */

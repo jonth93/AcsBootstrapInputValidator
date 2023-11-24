@@ -15,7 +15,7 @@ npm install acs-bootstrap-input-validator
 
 ```
 // Import the InputValidator class
-import InputValidator from 'input-validator';
+import { InputValidator } from 'acs-bootstrap-input-validator';
 
 // Initialize an instance of the InputValidator
 const validator = InputValidator;
