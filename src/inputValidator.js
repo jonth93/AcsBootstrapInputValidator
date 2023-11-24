@@ -2,7 +2,7 @@
  * Bootstrap Input Validator
  * A versatile input validation library for web applications, designed to work seamlessly with Bootstrap.
  *
- * @version 1.0.7
+ * @version 1.0.8
  * @copyright 2023 Jonathan Hayman
  * @license MIT
  */
@@ -84,21 +84,37 @@ export default class InputValidator {
     }
 
     /**
-    * Updates the error messages in the next div element with the class 'invalid-feedback'.
-    * 
-    * @param {HTMLElement} element - The input element for which error messages are updated.
-    * @param {string[]} errorMessages - An array of error messages to display.
-    * @returns {void}
-    */
+     * Updates the error messages in the next div element with the class 'invalid-feedback'.
+     * 
+     * @param {HTMLElement} element - The input element for which error messages are updated.
+     * @param {string[]} errorMessages - An array of error messages to display.
+     * @returns {void}
+     */
     static updateErrorMessages(element, errorMessages) {
-        // Find the next div element with class 'invalid-feedback'
-        let invalidFeedbackDiv = element.nextElementSibling;
+        // Find the parent div with class 'input-group'
+        const inputGroupDiv = element.closest('.input-group');
+
+        // Find the next div element with class 'invalid-feedback' after the input or input-group-append
+        let invalidFeedbackDiv = inputGroupDiv
+            ? inputGroupDiv.querySelector('.input-group-append + .invalid-feedback')
+            : element.nextElementSibling;
 
         if (!invalidFeedbackDiv || !invalidFeedbackDiv.classList.contains('invalid-feedback')) {
             // If 'invalid-feedback' div is not found or not the next sibling, create one
             invalidFeedbackDiv = document.createElement('div');
             invalidFeedbackDiv.classList.add('invalid-feedback');
-            element.insertAdjacentElement('afterend', invalidFeedbackDiv);
+
+            // Insert after the input element or the input-group-append, based on the scenario
+            if (inputGroupDiv) {
+                const inputGroupAppendDiv = inputGroupDiv.querySelector('.input-group-append');
+                if (inputGroupAppendDiv) {
+                    inputGroupAppendDiv.insertAdjacentElement('afterend', invalidFeedbackDiv);
+                } else {
+                    inputGroupDiv.appendChild(invalidFeedbackDiv);
+                }
+            } else {
+                element.insertAdjacentElement('afterend', invalidFeedbackDiv);
+            }
         }
 
         // Display custom error messages or fallback to a generic message
