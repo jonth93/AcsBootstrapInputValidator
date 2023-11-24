@@ -2,74 +2,80 @@
  * Bootstrap Input Validator
  * A versatile input validation library for web applications, designed to work seamlessly with Bootstrap.
  *
- * @version 1.0.1
+ * @version 1.0.4
  * @copyright 2023 Jonathan Hayman
  * @license MIT
  */
-export class InputValidator {
+export default class InputValidator {
     /**
     * Validates the input element based on the specified validation parameters.
     * 
     * @param {HTMLElement} element - The input element to be validated.
     * @param {Object} validationParams - An object containing validation parameters.
+    * @param {Object|null} validationMessages - An object containing custom error messages for validation types.
     * @returns {boolean}
     */
-    static validateInput(element, validationParams) {
+    static validateInput(element, validationParams, validationMessages) {
         const errorMessages = [];
 
         // Check if 'required' validation is present and value is empty
         if (validationParams.required && element.value.trim() === '') {
-            errorMessages.push('Value is required.');
+            errorMessages.push((validationMessages?.required || 'Value is required.'));
         }
 
         // Check if 'min-char' validation is present and value length is less than required
         if (validationParams.hasOwnProperty('min-char') && element.value.length < validationParams['min-char']) {
-            errorMessages.push(`Minimum ${validationParams['min-char']} characters required.`);
+            errorMessages.push((validationMessages?.['min-char'] || `Minimum ${validationParams['min-char']} characters required.`));
         }
 
         // Check if 'max-char' validation is present and value length is less than required
         if (validationParams.hasOwnProperty('max-char') && element.value.length > validationParams['max-char']) {
-            errorMessages.push(`Cannot be more than ${validationParams['max-char']} characters.`);
+            errorMessages.push((validationMessages?.['max-char'] || `Cannot be more than ${validationParams['max-char']} characters.`));
         }
 
         // Check if 'in' validation is present and value is not in the specified array
         if (validationParams.in && !validationParams.in.includes(element.value)) {
-            errorMessages.push('Invalid value.');
+            errorMessages.push((validationMessages?.in || 'Invalid value.'));
         }
 
         // Check if 'ipv4' validation is present and value is in the specified array
         if (validationParams.ipv4 && !this.isValidIpAddress(element.value)) {
-            errorMessages.push('Invalid IPv4 address.');
+            errorMessages.push((validationMessages?.ipv4 || 'Invalid IPv4 address.'));
         }
 
         // Check if 'email' validation is present and value is in the specified array
         if (validationParams.email && !this.isValidEmail(element.value)) {
-            errorMessages.push('Invalid email address.');
+            errorMessages.push((validationMessages?.email || 'Invalid email address.'));
         }
 
         // Check if 'url' validation is present and value is in the specified array
-        if (validationParams.url && !this.isValidUrl(element.value)) {
-            errorMessages.push('Invalid URL.');
+        if (validationParams.url && !this.isValidURL(element.value)) {
+            errorMessages.push((validationMessages?.url || 'Invalid URL.'));
         }
 
         // Check if 'numeric' validation is present and value is not a number
         if (validationParams.numeric && !this.isNumeric(element.value)) {
-            errorMessages.push('Invalid number. Please enter a numeric value.');
+            errorMessages.push((validationMessages?.numeric || 'Invalid number. Please enter a numeric value.'));
         }
 
         // check if 'numeric-range' validation is present and value is not a number
         if (validationParams.hasOwnProperty('numeric-range') && !this.isNumericInRange(element.value, validationParams['numeric-range']['min'], validationParams['numeric-range']['max'])) {
-            errorMessages.push('Invalid number.');
+            errorMessages.push((validationMessages?.['numeric-range'] || 'Invalid number.'));
         }
 
         // Check if 'date' validation is present and value is not a valid date
         if (validationParams.date && !this.isValidDate(element.value)) {
-            errorMessages.push('Invalid date format.');
+            errorMessages.push((validationMessages?.date || 'Invalid date format.'));
         }
 
         // Check if 'strongPassword' validation is present and value is not a strong password
         if (validationParams.strongPassword && !this.isStrongPassword(element.value)) {
-            errorMessages.push('Not strong enough. Minimum 8 characters, at least one uppercase letter, one lowercase letter, and one number.');
+            errorMessages.push((validationMessages?.strongPassword || 'Not strong enough. Minimum 8 characters, at least one uppercase letter, one lowercase letter, and one number.'));
+        }
+
+        // Check if 'customRegex' validation is present and value doesn't match the custom regex pattern
+        if (validationParams.customRegex && !this.customRegexValidation(element.value, validationParams.customRegex)) {
+            errorMessages.push((validationMessages?.customRegex || 'Custom validation failed.'));
         }
 
         // Update the error messages in the invalid-feedback div
@@ -88,15 +94,11 @@ export class InputValidator {
         // Find the next div element with class 'invalid-feedback'
         let invalidFeedbackDiv = element.nextElementSibling;
 
-        while (invalidFeedbackDiv && !invalidFeedbackDiv.classList.contains('invalid-feedback')) {
-            invalidFeedbackDiv = invalidFeedbackDiv.nextElementSibling;
-        }
-
-        if (!invalidFeedbackDiv) {
-            // If 'invalid-feedback' div is not found, create one
+        if (!invalidFeedbackDiv || !invalidFeedbackDiv.classList.contains('invalid-feedback')) {
+            // If 'invalid-feedback' div is not found or not the next sibling, create one
             invalidFeedbackDiv = document.createElement('div');
             invalidFeedbackDiv.classList.add('invalid-feedback');
-            element.parentNode.insertBefore(invalidFeedbackDiv, element.nextSibling);
+            element.insertAdjacentElement('afterend', invalidFeedbackDiv);
         }
 
         // Display custom error messages or fallback to a generic message
@@ -137,19 +139,30 @@ export class InputValidator {
     }
 
     /**
-    * Validates whether the given string represents a valid IPv4 address.
-    * 
-    * @param {string} ipAddress - The IP address to be validated.
-    * @returns {boolean} - True if the IP address is valid, otherwise false.
-    */
+     * Validates whether the given string represents a valid IPv4 address with optional subnet mask.
+     * 
+     * @param {string} ipAddress - The IP address to be validated.
+     * @returns {boolean} - True if the IP address is valid, otherwise false.
+     */
     static isValidIpAddress(ipAddress) {
-        const octets = ipAddress.split('.').map(Number);
-        return (
+        // Split the IP address into octets and optional subnet mask
+        const [ip, subnetMask] = ipAddress.split('/');
+
+        // Validate the IP address
+        const octets = ip.split('.').map(Number);
+        const validIp = (
             octets.length === 4 &&
-            octets.every(octet => octet >= 0 && octet <= 255) &&
-            octets.join('.') === ipAddress
+            octets.every(octet => octet >= 0 && octet <= 255)
         );
-    };
+
+        // If there's a subnet mask, validate it as a number between 0 and 32
+        const validSubnetMask = subnetMask === undefined ||
+            (subnetMask !== '' && Number(subnetMask) >= 0 && Number(subnetMask) <= 32);
+
+        // Return true if both IP address and subnet mask are valid
+        return validIp && validSubnetMask;
+    }
+
 
     /**
      * Validates whether the given string represents a valid email address.
@@ -201,15 +214,14 @@ export class InputValidator {
     }
 
     /**
-     * Validates whether the given string represents a valid date.
-     * 
-     * @param {string} dateString - The date string to be validated.
-     * @returns {boolean} - True if the date is valid, otherwise false.
-     */
+    * Validates whether the given string represents a valid date.
+    * 
+    * @param {string} dateString - The date string to be validated.
+    * @returns {boolean} - True if the date is valid, otherwise false.
+    */
     static isValidDate(dateString) {
-        // This is a simplified check
-        const date = new Date(dateString);
-        return !isNaN(date.getTime());
+        const dateRegex = /^(?:(?:\d{4}-\d{2}-\d{2})|(?:\d{2}-\d{2}-(?:\d{4}|\d{2})))$/;
+        return dateRegex.test(dateString);
     }
 
     /**
