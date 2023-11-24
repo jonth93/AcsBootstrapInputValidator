@@ -1,5 +1,7 @@
 # ACS Bootstrap Input Validator
 
+[![npm version](https://badge.fury.io/js/acs-bootstrap-input-validator.svg)](https://www.npmjs.com/package/acs-bootstrap-input-validator)
+
 A versatile input validation library for web applications using Javascript. Simplify the process of validating user input with a range of pre-built validation rules.
 
 ## Installation
@@ -66,7 +68,7 @@ if (validationResults.some(result => !result)) {
 
 ## Contributing
 
-Contributions are welcome!
+Contributions are welcome! Please read our [contribution guidelines](/CONTRIBUTING.md) for more details.
 
 ## License
 

@@ -1,6 +1,6 @@
 {
   "name": "acs-bootstrap-input-validator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A javascript input validator for bootstrap",
   "keywords": [
     "input",
@@ -21,11 +21,23 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
   },
   "author": "Jonathan Hayman",
   "license": "MIT",
   "dependencies": {
     "bootstrap": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0"
   }
 }
