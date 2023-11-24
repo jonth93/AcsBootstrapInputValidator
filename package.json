@@ -20,6 +20,10 @@
     "form-fields"
   ],
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonth93/AcsBootstrapInputValidator.git"
+  },
   "scripts": {
     "test": "jest"
   },
