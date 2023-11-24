@@ -1,6 +1,10 @@
 /**
- * InputValidator class
- * Copyright (c) 2023 Jonathan Hayman
+ * Bootstrap Input Validator
+ * A versatile input validation library for web applications, designed to work seamlessly with Bootstrap.
+ *
+ * @version 1.0.1
+ * @copyright 2023 Jonathan Hayman
+ * @license MIT
  */
 export class InputValidator {
     /**
