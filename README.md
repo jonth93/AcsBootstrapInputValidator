@@ -1,6 +1,7 @@
 # ACS Bootstrap Input Validator
 
 [![npm version](https://badge.fury.io/js/acs-bootstrap-input-validator.svg)](https://badge.fury.io/js/acs-bootstrap-input-validator)
+![NPM License](https://img.shields.io/npm/l/acs-bootstrap-input-validator)
 
 A versatile input validation library for web applications using Javascript. Simplify the process of validating user input with a range of pre-built validation rules.
 
@@ -17,7 +18,7 @@ npm install acs-bootstrap-input-validator
 import { InputValidator } from 'input-validator';
 
 // Initialize an instance of the InputValidator
-const validator = new InputValidator();
+const validator = InputValidator;
 
 // Example: Validate an input field for a required value
 const inputElement = document.getElementById('myInput');
