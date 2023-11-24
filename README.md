@@ -15,7 +15,7 @@ npm install acs-bootstrap-input-validator
 
 ```
 // Import the InputValidator class
-import { InputValidator } from 'input-validator';
+import InputValidator from 'input-validator';
 
 // Initialize an instance of the InputValidator
 const validator = InputValidator;
@@ -24,13 +24,19 @@ const validator = InputValidator;
 const inputElement = document.getElementById('myInput');
 const validationParams = { required: true };
 
-validator.validateInput(inputElement, validationParams);
+// Optional: Provide custom validation error messages
+const validationMessages = {
+  required: 'This field is required.',  // Example custom message for the 'required' validation
+  'numeric-range': 'Please enter a number between 10 and 50.'  // Example custom message for the 'numeric-range' validation
+};
+
+validator.validateInput(inputElement, validationParams, validationMessages);
 ```
 
 OR
 
 ```
-validator.validateInput(document.getElementById('ELEMENT'), { 'required': true });
+validator.validateInput(document.getElementById('ELEMENT'), { 'required': true }, { 'required': 'This field is required.' });
 ```
 
 ### Multiple Input Validation
@@ -43,7 +49,7 @@ const inputElement2 = document.getElementById('myInput2');
 const validationResults = [];
 
 // Validate SSID
-validationResults.push(validator.validateInput(inputElement, { 'min-char': 6, 'max-char': 32, 'required': true }));
+validationResults.push(validator.validateInput(inputElement, { 'min-char': 6, 'max-char': 32, 'required': true }, { 'min-char': 'Must be at least 6 Characters', 'required': 'This field is required.' }));
 
 // Validate channel
 validationResults.push(validator.validateInput(inputElement2, { 'required': true }));
