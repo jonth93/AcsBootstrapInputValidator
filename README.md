@@ -71,7 +71,8 @@ if (validationResults.some(result => !result)) {
 - **`numeric`**: Validates if the input is a numeric value.
 - **`numeric-range`**: Validates if the numeric input is within a specified range.
 - **`date`**: Validates if the input is a valid date.
-- **`strongPassword`**: Validates if the input is a strong password.Contributing
+- **`strongPassword`**: Validates if the input is a strong password.
+- **`equalTo`**: Validates if the input is equal to value provided.
 
 ## Contributing
 

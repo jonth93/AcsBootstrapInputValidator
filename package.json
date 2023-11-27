@@ -1,6 +1,6 @@
 {
   "name": "acs-bootstrap-input-validator",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A javascript input validator for bootstrap",
   "keywords": [
     "input",

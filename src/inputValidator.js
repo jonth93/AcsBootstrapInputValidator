@@ -2,7 +2,7 @@
  * Bootstrap Input Validator
  * A versatile input validation library for web applications, designed to work seamlessly with Bootstrap.
  *
- * @version 1.0.8
+ * @version 1.0.9
  * @copyright 2023 Jonathan Hayman
  * @license MIT
  */
@@ -71,6 +71,11 @@ export default class InputValidator {
         // Check if 'strongPassword' validation is present and value is not a strong password
         if (validationParams.strongPassword && !this.isStrongPassword(element.value)) {
             errorMessages.push((validationMessages?.strongPassword || 'Not strong enough. Minimum 8 characters, at least one uppercase letter, one lowercase letter, and one number.'));
+        }
+
+        // Check if 'equalTo' validation is present and value matches the specified value
+        if (validationParams.equalTo && !this.isEqualTo(element.value, validationParams.equalTo)) {
+            errorMessages.push((validationMessages?.equalTo || 'Input value does not match.'));
         }
 
         // Check if 'customRegex' validation is present and value doesn't match the custom regex pattern
@@ -262,5 +267,16 @@ export default class InputValidator {
         // Minimum 8 characters, at least one uppercase letter, one lowercase letter, and one number
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
         return passwordRegex.test(password);
+    }
+
+    /**
+     * Validates if a given value is equal to the value of the input element
+     * 
+     * @param {string} inputValue - The input value to be validated.
+     * @param {string} equalValue - The value to be compared to.
+     * @return {boolean} - True if the input value is equal to the equal value, otherwise false.
+     */
+    static isEqualTo(inputValue, equalValue) {
+        return inputValue === equalValue;
     }
 }
