@@ -13,7 +13,7 @@ npm install acs-bootstrap-input-validator
 
 ## Usage
 
-```
+```javascript
 // Import the InputValidator class
 import { InputValidator } from 'acs-bootstrap-input-validator';
 
@@ -35,13 +35,13 @@ validator.validateInput(inputElement, validationParams, validationMessages);
 
 OR
 
-```
+```javascript
 validator.validateInput(document.getElementById('ELEMENT'), { 'required': true }, { 'required': 'This field is required.' });
 ```
 
 ### Multiple Input Validation
 
-```
+```javascript
 const inputElement = document.getElementById('myInput');
 const inputElement2 = document.getElementById('myInput2');
 
