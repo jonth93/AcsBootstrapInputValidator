@@ -11,6 +11,12 @@ A versatile input validation library for web applications using Javascript. Simp
 npm install acs-bootstrap-input-validator
 ```
 
+Alternatively, you can include the library directly in your HTML using the [unpkg CDN](#direct-inclusion-with-cdn):
+
+```html
+<script src="https://unpkg.com/acs-bootstrap-input-validator/dist/InputValidator.min.js"></script>
+```
+
 ## Usage
 
 ```javascript
@@ -58,6 +64,34 @@ validationResults.push(validator.validateInput(inputElement2, { 'required': true
 if (validationResults.some(result => !result)) {
     return;
 }
+```
+
+## Direct Inclusion with CDN
+
+### Instalation
+
+Include the library directly in your HTML header:
+
+```html
+<script src="https://unpkg.com/acs-bootstrap-input-validator/dist/InputValidator.min.js"></script>
+```
+
+### Usage
+
+```javascript
+<script>
+  // Example: Validate an input field for a required value
+  const inputElement = document.getElementById('myInput');
+  const validationParams = { 'required': true, 'numeric-range': { 'min': 10, 'max': 50 } };
+
+  // Optional: Provide custom validation error messages
+  const validationMessages = {
+    'required': 'This field is required.',  // Example custom message for the 'required' validation
+    'numeric-range': 'Please enter a number between 10 and 50.'  // Example custom message for the 'numeric-range' validation
+  };
+
+  InputValidator.validateInput(inputElement, validationParams, validationMessages);
+</script>
 ```
 
 ## Available Validation Rules
